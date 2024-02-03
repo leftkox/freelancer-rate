@@ -1,35 +1,32 @@
 <script lang="ts">
-	import Button from "@smui/button";
-	import { Title, Subtitle } from "@smui/paper";
-	import { Label } from "@smui/tab";
+	import { EFKA_CLASS_AMOUNTS, freelancerToEmployee } from '$lib/calculators';
 	import Textfield from "@smui/textfield";
-	import { employeeToFreelancer, EFKA_CLASS_AMOUNTS } from '$lib/calculators';
 
   import Select, { Option } from '@smui/select';
  
 
-  let netSalary = 0;
+  let dailyRate = 0;
 
   let efkaClass = 0;
-  let fromCurrency: 'EUR' | 'GBP' = 'EUR';
-  let toCurrency: 'EUR' | 'GBP' = 'GBP';
+  let fromCurrency: 'EUR' | 'GBP' = 'GBP';
+  let toCurrency: 'EUR' | 'GBP' = 'EUR';
   const CURRENCIES = ['EUR', 'GBP'];
-  let dailyRate: number | undefined = undefined;
+  let netSalary: number | undefined = undefined;
 
   const currencySymbols = {
     EUR: '€',
     GBP: '£'
   }
 
-  $: dailyRate = employeeToFreelancer(netSalary ?? 0, efkaClass ?? 0, fromCurrency, toCurrency);
+  $: netSalary = freelancerToEmployee(dailyRate ?? 0, efkaClass ?? 0, fromCurrency, toCurrency);
 </script>
 
 
 <div>
 
-  <div class="form-label mdc-typography--body1" style="margin-top: 30px;">1. Enter your net annual salary</div>
+  <div class="form-label mdc-typography--body1" style="margin-top: 30px;">1. Enter your daily rate as a freelancer</div>
   <div class="currency-amount-row">
-  <Textfield variant="outlined" bind:value={netSalary} label="Salary"></Textfield>
+  <Textfield variant="outlined" bind:value={dailyRate} label="Rate"></Textfield>
   <div>
     <Select bind:value={fromCurrency} label="Select currency">
       {#each CURRENCIES as currency}
@@ -50,7 +47,7 @@
   </div>
 
   <div style="margin-top: 50px;" class="form-label mdc-typography--body1">
-    3. Enter the currency you will be receiving payments in as a freelancer
+    3. Enter the currency you will be receiving payments in as an employee
   </div>
   <div>
     <Select bind:value={toCurrency}>
@@ -64,7 +61,7 @@
 
     {#if dailyRate !== undefined}
       <div class="mdc-typography--body1" style="margin-top: 20px">
-        An amount of {currencySymbols[fromCurrency]}{netSalary} annually net is equivalent to a daily rate of  {currencySymbols[toCurrency]}{Math.round(dailyRate)}.
+        A daily rate of {currencySymbols[fromCurrency]}{dailyRate} gross is equivalent to a net annual salary of {currencySymbols[toCurrency]}{Math.round(netSalary ?? 0)}.
       </div>
     {/if}
   </div>

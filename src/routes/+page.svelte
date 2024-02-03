@@ -3,6 +3,7 @@
 	import Tab, { Label } from '@smui/tab';
 	import TabBar from '@smui/tab-bar';
 	import EmployeeToFreelancer from '$components/employee-to-freelancer.svelte';
+	import FreelancerToEmployee from '$components/freelancer-to-employee.svelte';
 
 	let active = 'Employee to freelancer';
 
@@ -20,7 +21,7 @@
 		<EmployeeToFreelancer />
 	{:else if active === 'Freelancer to employee'}
 		<div >
-			<Content>Under construction!!!</Content>
+			<FreelancerToEmployee />
 		</div>
 	{/if}
 	</Paper>
